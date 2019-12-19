@@ -1,0 +1,103 @@
+{
+  "name": "test4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "author": "zman",
+  "license": "MIT",
+  "scripts": {
+    "dev": "BABEL_ENV=development babel -w --extensions .ts,tsx src -d lib --copy-files",
+    "build": "rimraf lib && BABEL_ENV=production babel --extensions .ts,.tsx src -d lib --copy-files && tsc --emitDeclarationOnly",
+    "prepublishOnly": "npm run test && npm run build",
+    "lint:js": "eslint --config .eslintrc.yml --format codeframe --fix --ext .js,.jsx,.ts,.tsx src",
+    "lint:style": "stylelint --fix src/**/*.{less,scss,css}",
+    "test": "jest --coverage",
+    "test:w": "jest --watchAll --rootDir ./src --passWithNoTests",
+    "prerelease": "npm run test",
+    "release": "standard-version && git push -u --tags && npm pack"
+  },
+  "files": [
+    "lib",
+    "typings"
+  ],
+  "dependencies": {
+    "koa": "^2.11.0"
+  },
+  "devDependencies": {
+    "@a8k/babel-preset": "^2.3.0",
+    "@a8k/changelog": "^2.3.0",
+    "@babel/cli": "^7.4.4",
+    "@commitlint/cli": "^8.1.0",
+    "@types/jest": "^24.0.24",
+    "@types/koa": "^2.11.0",
+    "@types/node": "^12.12.21",
+    "@types/prop-types": "^15.7.1",
+    "@types/react": "^16.8.23",
+    "@types/react-router-dom": "^5.1.3",
+    "@typescript-eslint/eslint-plugin": "^2.3.2",
+    "@typescript-eslint/parser": "^2.3.2",
+    "babel-plugin-import": "^1.12.0",
+    "commitizen": "^4.0.3",
+    "commitlint-config-cz": "^0.12.1",
+    "cz-customizable": "^6.2.0",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^3.1.0",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.5.0",
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.0",
+    "standard-version": "^7.0.1",
+    "stylelint": "^12.0.0",
+    "stylelint-config-css-modules": "^2.1.0",
+    "stylelint-config-recommended": "^3.0.0",
+    "stylelint-config-standard": "^19.0.0",
+    "stylelint-scss": "^3.13.0",
+    "ts-jest": "^24.2.0",
+    "ts-node-dev": "^1.0.0-pre.40",
+    "typescript": "^3.7.3"
+  },
+  "lint-staged": {
+    "*.{css,less,scss}": [
+      "prettier --write",
+      "stylelint --fix",
+      "git add"
+    ],
+    "*.{json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{jsx,js}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "node_modules/@a8k/changelog/cz-config.js"
+    }
+  }
+}
